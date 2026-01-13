@@ -1,4 +1,4 @@
-// 83. Remove Duplicates from Sorted List
+// 61. Rotate List
 
 
 #include<iostream>
@@ -30,18 +30,29 @@ void printList(ListNode *head) {
 
 class Solution {
 public:
-    ListNode* deleteDuplicates(ListNode* head) {
-        if(!head) return nullptr;
-        ListNode *lastN = head;
+    ListNode* rotateRight(ListNode* head, int k) {
+        // 2nd submission
+        if(!head || !head->next || k == 0) return head;
+
         ListNode *temp = head;
-        while(temp) {
-            if(lastN->val != temp->val) {
-                lastN->next=temp;
-                lastN=lastN->next;
-            }
+        int len = 1;
+        while(temp->next) {
+            len++;
             temp=temp->next;
         }
-        lastN->next = nullptr;
+        k=k%len;
+        if(k==0) return head;
+
+        temp->next = head;
+        temp=head;
+        int pos = len - k;
+        while(temp && pos>1) {
+            temp=temp->next;
+            pos--;
+        }
+        head = temp->next;
+        temp->next = nullptr;
+
         return head;
     }
 };
@@ -63,9 +74,9 @@ int main()
     printList(head);
 
     Solution sol;
-    head = sol.deleteDuplicates(head);
+    head = sol.rotateRight(head, 2);
 
-    cout << "List after removing duplicates: ";
+    cout << "List after rotating right by 2 positions: ";
     printList(head);
 
     // Free memory
