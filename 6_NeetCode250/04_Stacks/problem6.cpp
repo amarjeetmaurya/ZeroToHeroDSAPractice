@@ -13,22 +13,32 @@ public:
     int evalRPN(vector<string>& tokens) {
         stack<int> stc;
 
-        for (const string &token : tokens) {
-            if (token.size() == 1 && !isdigit(token[0])) {
-                int b = stc.top(); stc.pop();
-                int a = stc.top(); stc.pop();
-
-                switch (token[0]) {
-                    case '+': stc.push(a + b); break;
-                    case '-': stc.push(a - b); break;
-                    case '*': stc.push(a * b); break;
-                    case '/': stc.push(a / b); break;
-                }
+        int i =0;
+        while(i < tokens.size()) {
+            if(tokens[i] == "+") {
+                int temp = stc.top();
+                stc.pop();
+                stc.top() = stc.top() + temp;
+            } else if(tokens[i] == "-") {
+                int temp = stc.top();
+                stc.pop();
+                stc.top() = stc.top() - temp;
+            } else if(tokens[i] == "*") {
+                int temp = stc.top();
+                stc.pop();
+                int temp2 = stc.top();
+                stc.top() = stc.top() * temp;
+            } else if(tokens[i] == "/") {
+                int temp = stc.top();
+                stc.pop();
+                stc.top() = stc.top() / temp;
             } else {
-                stc.push(stoi(token));
+                stc.push(stoi(tokens[i]));
             }
+            
+            i++;
         }
-        
+
         return stc.top();
     }
 };
